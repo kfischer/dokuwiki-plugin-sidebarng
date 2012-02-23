@@ -21,7 +21,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
 
     // register hook
     function register(&$controller) {
-        $controller->register_hook('TPL_CONTENT_DISPLAY', 'BEFORE', $this, '_before');
+        $controller->register_hook('TPL_ACT_RENDER', 'BEFORE', $this, '_before');
         $controller->register_hook('TPL_CONTENT_DISPLAY', 'AFTER', $this, '_after');
     }
 
@@ -36,14 +36,14 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         if(empty($this->sidebar) && !$this->getConf('main_always')) {
             print '<div class="page">' . DOKU_LF;
         } else {
-            if($pos == 'left') {
-                    print '<div class="' . $pos . '_sidebar">' . DOKU_LF;
-                    print $this->sidebar;
-                    print '</div>' . DOKU_LF;
-                    print '<div class="page_right">' . DOKU_LF;
-            } else {
+#            if($pos == 'left') {
+#                    print '<div class="' . $pos . '_sidebar">' . DOKU_LF;
+#                    print $this->sidebar;
+#                    print '</div>' . DOKU_LF;
+#                    print '<div class="page_right">' . DOKU_LF;
+#            } else {
                 print '<div class="page_left">' . DOKU_LF;
-            }
+#            }
         }
     }
 
@@ -56,7 +56,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
             print '</div>' . DOKU_LF; 
             } else {
                 print '</div>' . DOKU_LF;
-                print '<div class="' . $pos . '_sidebar">' . DOKU_LF;
+                print '<div class="sidebar ' . $pos . '_sidebar">' . DOKU_LF;
                 print $this->sidebar;
                 print '</div>'. DOKU_LF;
             }
@@ -188,11 +188,60 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 }
                 break;
 
-            case 'toolbox':
-                $actions = array('admin', 'edit', 'history', 'recent', 'backlink', 'subscribe', 'subscribens', 'index', 'login', 'profile');
+        case 'toc':
+            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
+            if(auth_quickaclcheck($svID) >= AUTH_READ) {
+                $toc = tpl_toc(true);
+                // replace ids to keep XHTML compliance
+                if(!empty($toc)) {
+                    $toc = preg_replace('/id="(.*?)"/', 'id="sb__' . $pos . '__\1"', $toc);
+                    print '<div class="toc_sidebar">' . DOKU_LF;
+                    print ($toc);
+                    print '</div>' . DOKU_LF;
+                }
+            }
+            $INFO['prependTOC'] = false;
+            break;
+
+        case 'index':
+            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
+            print '<div class="index_sidebar sidebar_box">' . DOKU_LF;
+            print '  ' . p_index_xhtml($svID,$pos) . DOKU_LF;
+            print '</div>' . DOKU_LF;
+            break;
+
+        
+        case 'toolbox':
+
+            if($this->getConf('hideactions') && !isset($_SERVER['REMOTE_USER'])) return;
+
+            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) {
+                print '<div class="toolbox_sidebar sidebar_box">' . DOKU_LF;
+                print '  <div class="level1">' . DOKU_LF;
+                print '    <ul>' . DOKU_LF;
+                print '      <li><div class="li">';
+                tpl_actionlink('login');
+                print '      </div></li>' . DOKU_LF;
+                print '    </ul>' . DOKU_LF;
+                print '  </div>' . DOKU_LF;
+                print '</div>' . DOKU_LF;
+            } else {
+                $actions = array('admin', 
+                                 'revert', 
+                                 'edit', 
+                                 'history', 
+                                 'recent', 
+                                 'backlink', 
+                                 'media', 
+                                 'subscription', 
+                                 'index', 
+                                 'login', 
+                                 'profile',
+                                 'top');
 
                 print '<div class="toolbox_sidebar sidebar_box">' . DOKU_LF;
-                print '  <ul>' . DOKU_LF;
+                print '  <div class="level1">' . DOKU_LF;
+                print '    <ul>' . DOKU_LF;
 
                 foreach($actions as $action) {
                     if(!actionOK($action)) continue;
@@ -202,7 +251,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                         if(!plugin_isdisabled('npd') && ($npd =& plugin_load('helper', 'npd'))) {
                             $npb = $npd->html_new_page_button(true);
                             if($npb) {
-                                print '    <li class="level1"><div class="li">';
+                                print '    <li><div class="li">';
                                 print $npb;
                                 print '</div></li>' . DOKU_LF;
                             }
@@ -219,42 +268,52 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 }
 
                 print '  </ul>' . DOKU_LF;
-                print '</div>' . DOKU_LF;
-                break;
-
-            case 'trace':
-                print '<div class="trace_sidebar sidebar_box">' . DOKU_LF;
-                print '  <h1>'.$lang['breadcrumb'].'</h1>' . DOKU_LF;
-                print '  <div class="breadcrumbs">' . DOKU_LF;
-                ($conf['youarehere'] != 1) ? tpl_breadcrumbs() : tpl_youarehere();
                 print '  </div>' . DOKU_LF;
                 print '</div>' . DOKU_LF;
-                break;
+            }
 
-            case 'extra':
-                print '<div class="extra_sidebar sidebar_box">' . DOKU_LF;
-                @include(dirname(__FILE__).'/sidebar.html');
+            break;
+
+        case 'trace':
+            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
+            print '<div class="trace_sidebar sidebar_box">' . DOKU_LF;
+            print '  <div class="sb_label">'.$lang['breadcrumb'].'</div>' . DOKU_LF;
+            print '  <div class="breadcrumbs">' . DOKU_LF;
+            ($conf['youarehere'] != 1) ? tpl_breadcrumbs() : tpl_youarehere();
+            print '  </div>' . DOKU_LF;
+            print '</div>' . DOKU_LF;
+            break;
+
+        case 'extra':
+            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
+            print '<div class="extra_sidebar sidebar_box">' . DOKU_LF;
+            @include(dirname(__FILE__).'/sidebar.html');
+            print '</div>' . DOKU_LF;
+            break;
+
+        default:
+            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
+
+            if(@file_exists(DOKU_PLUGIN.'sidebarng/sidebars/'.$sb.'/sidebar.php')) {
+                print '<div class="'.$sb.'_sidebar sidebar_box">' . DOKU_LF;
+                @require_once(DOKU_PLUGIN.'sidebarng/sidebars/'.$sb.'/sidebar.php');
                 print '</div>' . DOKU_LF;
-                break;
-
-            default:
-                // check for user defined sidebars
-                if(@file_exists(DOKU_PLUGIN.'sidebarng/sidebars/'.$sb.'/sidebar.php')) {
-                    print '<div class="'.$sb.'_sidebar sidebar_box">' . DOKU_LF;
-                    @require_once(DOKU_PLUGIN.'sidebarng/sidebars/'.$sb.'/sidebar.php');
-                    print '</div>' . DOKU_LF;
-                }
-                break;
+            }
+            break;
         }
 
         // restore ID and REV
         $ID  = $svID;
         $REV = $svREV;
+        $TOC = $svTOC;
     }
 
     /**
      * Removes the TOC of the sidebar pages and 
      * shows a edit button if the user has enough rights
+ *
+ * TODO sidebar caching
+ * 
      *
      * @author Michael Klier <chi@chimeric.de>
      */
@@ -272,26 +331,73 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         $data = preg_replace('/(<h.*?><a.*?name=")(.*?)(".*?id=")(.*?)(">.*?<\/a><\/h.*?>)/','\1sb_'.$pos.'_\2\3sb_'.$pos.'_\4\5', $data);
         return ($data);
     }
+/**
+ * Renders the Index
+ *
+ * copy of html_index located in /inc/html.php
+ *
+ * TODO update to new AJAX index possible?
+ *
+ * @author Andreas Gohr <andi@splitbrain.org>
+ * @author Michael Klier <chi@chimeric.de>
+ */
+function p_index_xhtml($ns,$pos) {
+  require_once(DOKU_INC.'inc/search.php');
+  global $conf;
+  global $ID;
+  $dir = $conf['datadir'];
+  $ns  = cleanID($ns);
+  #fixme use appropriate function
+  if(empty($ns)){
+    $ns = dirname(str_replace(':','/',$ID));
+    if($ns == '.') $ns ='';
+  }
+  $ns  = utf8_encodeFN(str_replace(':','/',$ns));
 
-    /**
-     * Searches for namespace sidebars
-     *
-     * @author Michael Klier <chi@chimeric.de>
-     */
-    function _getNsSb($id) {
-        $pname = $this->getConf('pagename');
-        $ns_sb = '';
-        $path  = explode(':', $id);
-        $found = false;
+  // extract only the headline
+  preg_match('/<h1>.*?<\/h1>/', p_locale_xhtml('index'), $match);
+  print preg_replace('#<h1(.*?id=")(.*?)(".*?)h1>#', '<h1\1sidebar_'.$pos.'_\2\3h1>', $match[0]);
 
-        while(count($path) > 0) {
-            $ns_sb = implode(':', $path).':'.$pname;
-            if(@page_exists($ns_sb)) return $ns_sb;
-            array_pop($path);
-        }
-        
-        // nothing found
+  $data = array();
+  search($data,$conf['datadir'],'search_index',array('ns' => $ns));
+
+  print '<div id="' . $pos . '__index__tree">' . DOKU_LF;
+  print html_buildlist($data,'idx','html_list_index','html_li_index');
+  print '</div>' . DOKU_LF;
+}
+
+/**
+ * Searches for namespace sidebars
+ *
+ * @author Michael Klier <chi@chimeric.de>
+ */
+function _getNsSb($id) {
+     $pname = $this->getConf('pagename');
+     $ns_sb = '';
+     $path  = explode(':', $id);
+     $found = false;
+
+     while(count($path) > 0) {
+         $ns_sb = implode(':', $path).':'.$pname;
+         if(@page_exists($ns_sb)) return $ns_sb;
+         array_pop($path);
+     }
+     
+     // nothing found
+     return false;
+ }
+  /**
+   * Checks wether the sidebar should be hidden or not
+   *
+   * @author Michael Klier <chi@chimeric.de>
+   */
+  function tpl_sidebar_hide() {
+    global $ACT;
+    $act_hide = array( 'edit', 'preview', 'admin', 'conflict', 'draft', 'recover', 'media' );
+    if(in_array($ACT, $act_hide)) {
+        return true;
+    } else {
         return false;
     }
+  }
 }
-// vim:ts=4:sw=4:et:enc=utf-8:
