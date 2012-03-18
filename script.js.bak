@@ -1,12 +1,15 @@
 /**      
- * Adds the toggle switch to the TOC
+ * Adds the toggle switch to the everythin
  */      
-function addSbTocToggle() {   
+function addToggle( v ) {   
+
+alert( 'v: '+v );
     if(!document.getElementById) return;
-    var header = jQuery('#sb__right__toc__header');
+    var tid = '#'+v+'__header';
+    var header = jQuery( tid );
     if(!header.length) return; 
     var obj          = document.createElement('span');
-    obj.id           = 'sb__right__toc__toggle';
+    obj.id           = v+'__toggle';
     obj.innerHTML    = '<span>&minus;</span>';
     obj.className    = 'toc_close';
     obj.style.cursor = 'pointer';  
@@ -15,19 +18,19 @@ function addSbTocToggle() {
     jQuery( header ).prepend( obj );
          
     //obj.parentNode.onclick = toggleSbRightToc;
-    jQuery( obj.parentNode ).bind( 'click', toggleSbToc );
+    jQuery( obj.parentNode ).bind( 'click', toggleSb );
     try {
        obj.parentNode.style.cursor = 'pointer';
        obj.parentNode.style.cursor = 'hand';
     }catch(e){}                
 }        
-         
-/**      
- * This toggles the visibility of the Table of Contents
- */      
-function toggleSbToc() {  
-  var toc = jQuery('#sb__right__toc__inside');
-  var obj = jQuery('#sb__right__toc__toggle');
+function toggleSb() {  
+
+  var id = this.attr.id;
+  //alert( 'id '+id );
+
+  var toc = jQuery('#'+v+'__inside');
+  var obj = jQuery('#'+v+'__toggle');
          
   if( toc.css( 'display' ) == 'none' ) {
     toc.css( 'display', 'block' ); 
@@ -52,13 +55,18 @@ var right_dw_index = jQuery('#sb__index__tree').dw_tree({deferInit: true,
 });  
 
 jQuery(function(){
-// from lib/scripts/index.js 
-    var $tree = jQuery('#right__index__tree');
-    right_dw_index.$obj = $tree;
-    right_dw_index.init();
- 
-// add TOC events
-    jQuery(addSbTocToggle);
+  // from lib/scripts/index.js 
+//    var $tree = jQuery('#right__index__tree');
+//    right_dw_index.$obj = $tree;
+//    right_dw_index.init();
+
+    //jQuery( addToggle( 'sb__right__toc' ));
+
+    jQuery( '.sidebarng div' ).each( function( ) {
+
+
+
+    });
  
 });
 
