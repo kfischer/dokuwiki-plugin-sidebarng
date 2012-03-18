@@ -4,6 +4,7 @@
  * 
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
  * @author     Michael Klier <chi@chimeric.de>
+ * @author     Samuel Fischer <sf@notomorrow.de>
  */
 // must be run within Dokuwiki
 if(!defined('DOKU_INC')) die();
@@ -33,34 +34,16 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         $this->sidebar = ob_get_contents();
         ob_end_clean();
 
-        if(empty($this->sidebar) && !$this->getConf('main_always')) {
-            print '<div class="page">' . DOKU_LF;
-        } else {
-#            if($pos == 'left') {
-#                    print '<div class="' . $pos . '_sidebar">' . DOKU_LF;
-#                    print $this->sidebar;
-#                    print '</div>' . DOKU_LF;
-#                    print '<div class="page_right">' . DOKU_LF;
-#            } else {
-                print '<div class="page_left">' . DOKU_LF;
-#            }
+        if( !empty( $this->sidebar ) && $this->getConf( 'main_always' )) {
+            print '<div class="page">'.DOKU_LF;
+            print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
+            print $this->sidebar;
+            print '</div>'. DOKU_LF;
         }
     }
 
     function _after(&$event, $param) {
-        $pos = $this->getConf('pos');
-        if(empty($this->sidebar) && !$this->getConf('main_always')) {
-            print '</div>' . DOKU_LF;
-        } else {
-            if($pos == 'left') {
-            print '</div>' . DOKU_LF; 
-            } else {
-                print '</div>' . DOKU_LF;
-                print '<div class="sidebar ' . $pos . '_sidebar">' . DOKU_LF;
-                print $this->sidebar;
-                print '</div>'. DOKU_LF;
-            }
-        }
+        print '</div>' . DOKU_LF; 
     }
 
     /**
@@ -194,7 +177,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 $toc = tpl_toc(true);
                 // replace ids to keep XHTML compliance
                 if(!empty($toc)) {
-                    $toc = preg_replace('/id="(.*?)"/', 'id="sb__' . $pos . '__\1"', $toc);
+                    #$toc = preg_replace('/id="(.*?)"/', 'id="sb__' . $pos . '__\1"', $toc);
                     print '<div class="toc_sidebar">' . DOKU_LF;
                     print ($toc);
                     print '</div>' . DOKU_LF;
@@ -206,7 +189,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         case 'index':
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
             print '<div class="index_sidebar sidebar_box">' . DOKU_LF;
-            print '  ' . p_index_xhtml($svID,$pos) . DOKU_LF;
+            print '  ' . $this->p_index_xhtml($svID,$pos) . DOKU_LF;
             print '</div>' . DOKU_LF;
             break;
 
@@ -215,18 +198,18 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
 
             if($this->getConf('hideactions') && !isset($_SERVER['REMOTE_USER'])) return;
 
+            print '<div class="sidebar_head">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) {
                 print '<div class="toolbox_sidebar sidebar_box">' . DOKU_LF;
-                print '  <div class="level1">' . DOKU_LF;
                 print '    <ul>' . DOKU_LF;
                 print '      <li><div class="li">';
                 tpl_actionlink('login');
                 print '      </div></li>' . DOKU_LF;
                 print '    </ul>' . DOKU_LF;
-                print '  </div>' . DOKU_LF;
                 print '</div>' . DOKU_LF;
             } else {
-                $actions = array('admin', 
+                $actions = array(
+                                 'admin', 
                                  'revert', 
                                  'edit', 
                                  'history', 

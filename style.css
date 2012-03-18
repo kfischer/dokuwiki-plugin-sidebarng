@@ -2,6 +2,7 @@
  * CSS for the DokuWiki SidebarNG plugin
  */
 
+/* outside */
 div.dokuwiki div.left_sidebar {
   float: left;
   width: 23%;
@@ -28,39 +29,6 @@ div.dokuwiki div.page_left {
   padding-right: 1%;
 }
 
-div.dokuwiki div.left_sidebar div.sidebar_box {
-  width: 100%;
-  float: left;
-  clear: both;
-}
 
-div.dokuwiki div.right_sidebar div.sidebar_box {
-  width: 100%;
-  float: right;
-  clear: both;
-}
-
-div.dokuwiki div.sidebar_box ul {
-  margin-left: 0;
-  padding-left: 1em;
-}
-div.dokuwiki div.sidebar_box ul ul {
-  padding-left: 1em;
-}
-
-div.dokuwiki div.sidebar div.toc {
-  display: inline;
-  float: none;
-}                
-div.dokuwiki div.sidebar div.tocheader {
-  font-size: 120%;
-  line-height: 140%;
-  border: none;  
-}                
-                 
-div.dokuwiki div.sidebar div#toc__inside {
-  border: none;  
-  padding: 0;    
-}                
-                 
+/* inside */                 
 
