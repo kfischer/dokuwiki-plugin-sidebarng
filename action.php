@@ -54,7 +54,6 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
     function p_sidebar($pos) {
         $sb_order   = explode(',', $this->getConf('order'));
         $sb_content = explode(',', $this->getConf('content'));
-        $notoc      = (in_array('toc', $sb_content)) ? true : false;
 
         // process contents by given order
         foreach($sb_order as $sb) {
@@ -98,7 +97,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                     if(auth_quickaclcheck($main_sb) >= AUTH_READ) {
                         $always = $this->getConf('main_always');
                         if($always or (!$always && !getNS($ID))) {
-                            print '<div class="main_sidebar sidebar_box">' . DOKU_LF;
+                            print '<div class="sbhead">'.$this->p_sidebar_title( $main_sb ).'</div>' . DOKU_LF;
+                            print '<div class="main_sidebar sbbox">' . DOKU_LF;
                             print $this->p_sidebar_xhtml($main_sb,$pos) . DOKU_LF;
                             print '</div>' . DOKU_LF;
                         }
@@ -106,7 +106,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 } else {
                     $out = $this->locale_xhtml('nosidebar');
                     $link = '<a href="' . wl($pname) . '" class="wikilink2">' . $pname . '</a>' . DOKU_LF;
-                    print '<div class="main_sidebar sidebar_box">' . DOKU_LF;
+                    print '<div class="main_sidebar sbbox">' . DOKU_LF;
                     print str_replace('LINK', $link, $out);
                     print '</div>' . DOKU_LF;
                 }
@@ -118,7 +118,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 if(!preg_match("/^".$user_ns.":.*?$|^".$group_ns.":.*?$/", $svID)) { // skip group/user sidebars and current ID
                     $ns_sb = $this->_getNsSb($svID);
                     if($ns_sb && auth_quickaclcheck($ns_sb) >= AUTH_READ) {
-                        print '<div class="namespace_sidebar sidebar_box">' . DOKU_LF;
+                        print '<div class="sbhead">'.$this->p_sidebar_title( $ns_sb ).'</div>' . DOKU_LF;
+                        print '<div class="namespace_sidebar sbbox">' . DOKU_LF;
                         print $this->p_sidebar_xhtml($ns_sb,$pos) . DOKU_LF;
                         print '</div>' . DOKU_LF;
                     }
@@ -132,7 +133,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                     $user_sb = $user_ns . ':' . $user . ':' . $pname;
                     if(@page_exists($user_sb)) {
                         $subst = array('pattern' => array('/@USER@/'), 'replace' => array($user));
-                        print '<div class="user_sidebar sidebar_box">' . DOKU_LF;
+                        print '<div class="sbhead">'.$this->p_sidebar_title( $user_sb ).'</div>' . DOKU_LF;
+                        print '<div class="user_sidebar sbbox">' . DOKU_LF;
                         print $this->p_sidebar_xhtml($user_sb,$pos,$subst) . DOKU_LF;
                         print '</div>';
                     }
@@ -140,7 +142,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                     if(preg_match('/'.$user_ns.':'.$user.':.*/', $svID)) {
                         $ns_sb = $this->_getNsSb($svID); 
                         if($ns_sb && $ns_sb != $user_sb && auth_quickaclcheck($ns_sb) >= AUTH_READ) {
-                            print '<div class="namespace_sidebar sidebar_box">' . DOKU_LF;
+                            print '<div class="sbhead">'.$this->p_sidebar_title( $ns_sb ).'</div>' . DOKU_LF;
+                            print '<div class="namespace_sidebar sbbox">' . DOKU_LF;
                             print $this->p_sidebar_xhtml($ns_sb,$pos) . DOKU_LF;
                             print '</div>' . DOKU_LF;
                         }
@@ -156,7 +159,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                         $group_sb = $group_ns.':'.$grp.':'.$pname;
                         if(@page_exists($group_sb) && auth_quickaclcheck(cleanID($group_sb)) >= AUTH_READ) {
                             $subst = array('pattern' => array('/@GROUP@/'), 'replace' => array($grp));
-                            print '<div class="group_sidebar sidebar_box">' . DOKU_LF;
+                            print '<div class="sbhead">'.$this->p_sidebar_title( $group_sb ).'</div>' . DOKU_LF;
+                            print '<div class="group_sidebar sbbox">' . DOKU_LF;
                             print $this->p_sidebar_xhtml($group_sb,$pos,$subst) . DOKU_LF;
                             print '</div>' . DOKU_LF;
                         }
@@ -164,7 +168,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 } else {
                     $group_sb = $group_ns.':all:'.$pname;
                     if(@page_exists($group_sb) && auth_quickaclcheck(cleanID($group_sb)) >= AUTH_READ) {
-                        print '<div class="group_sidebar sidebar_box">' . DOKU_LF;
+                        print '<div class="sbhead">'.$this->p_sidebar_title( $group_sb ).'</div>' . DOKU_LF;
+                        print '<div class="group_sidebar sbbox">' . DOKU_LF;
                         print $this->p_sidebar_xhtml($group_sb,$pos,$subst) . DOKU_LF;
                         print '</div>' . DOKU_LF;
                     }
@@ -172,23 +177,19 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 break;
 
         case 'toc':
-            if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
             if(auth_quickaclcheck($svID) >= AUTH_READ) {
                 $toc = tpl_toc(true);
-                // replace ids to keep XHTML compliance
                 if(!empty($toc)) {
-                    #$toc = preg_replace('/id="(.*?)"/', 'id="sb__' . $pos . '__\1"', $toc);
-                    print '<div class="toc_sidebar">' . DOKU_LF;
                     print ($toc);
-                    print '</div>' . DOKU_LF;
                 }
             }
-            $INFO['prependTOC'] = false;
+            $INFO['prependTOC'] = 0;
             break;
 
         case 'index':
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
-            print '<div class="index_sidebar sidebar_box">' . DOKU_LF;
+            print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+            print '<div class="index_sidebar sbbox">' . DOKU_LF;
             print '  ' . $this->p_index_xhtml($svID,$pos) . DOKU_LF;
             print '</div>' . DOKU_LF;
             break;
@@ -196,11 +197,10 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         
         case 'toolbox':
 
-            if($this->getConf('hideactions') && !isset($_SERVER['REMOTE_USER'])) return;
-
-            print '<div class="sidebar_head">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+            print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) {
-                print '<div class="toolbox_sidebar sidebar_box">' . DOKU_LF;
+                print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+                print '<div class="toolbox_sidebar sbbox">' . DOKU_LF;
                 print '    <ul>' . DOKU_LF;
                 print '      <li><div class="li">';
                 tpl_actionlink('login');
@@ -222,8 +222,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                                  'profile',
                                  'top');
 
-                print '<div class="toolbox_sidebar sidebar_box">' . DOKU_LF;
-                print '  <div class="level1">' . DOKU_LF;
+                print '<div class="toolbox_sidebar sbbox">' . DOKU_LF;
                 print '    <ul>' . DOKU_LF;
 
                 foreach($actions as $action) {
@@ -251,7 +250,6 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
                 }
 
                 print '  </ul>' . DOKU_LF;
-                print '  </div>' . DOKU_LF;
                 print '</div>' . DOKU_LF;
             }
 
@@ -259,7 +257,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
 
         case 'trace':
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
-            print '<div class="trace_sidebar sidebar_box">' . DOKU_LF;
+            print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+            print '<div class="trace_sidebar sbbox">' . DOKU_LF;
             print '  <div class="sb_label">'.$lang['breadcrumb'].'</div>' . DOKU_LF;
             print '  <div class="breadcrumbs">' . DOKU_LF;
             ($conf['youarehere'] != 1) ? tpl_breadcrumbs() : tpl_youarehere();
@@ -269,7 +268,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
 
         case 'extra':
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
-            print '<div class="extra_sidebar sidebar_box">' . DOKU_LF;
+            print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+            print '<div class="extra_sidebar sbbox">' . DOKU_LF;
             @include(dirname(__FILE__).'/sidebar.html');
             print '</div>' . DOKU_LF;
             break;
@@ -278,7 +278,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
 
             if(@file_exists(DOKU_PLUGIN.'sidebarng/sidebars/'.$sb.'/sidebar.php')) {
-                print '<div class="'.$sb.'_sidebar sidebar_box">' . DOKU_LF;
+                print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+                print '<div class="'.$sb.'_sidebar sbbox">' . DOKU_LF;
                 @require_once(DOKU_PLUGIN.'sidebarng/sidebars/'.$sb.'/sidebar.php');
                 print '</div>' . DOKU_LF;
             }
@@ -313,6 +314,11 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         // replace headline ids for XHTML compliance
         $data = preg_replace('/(<h.*?><a.*?name=")(.*?)(".*?id=")(.*?)(">.*?<\/a><\/h.*?>)/','\1sb_'.$pos.'_\2\3sb_'.$pos.'_\4\5', $data);
         return ($data);
+    }
+    function p_sidebar_title($sb) {
+        if( !$title = p_get_first_heading($sb,METADATA_RENDER_USING_SIMPLE_CACHE)) {
+            return $sb;
+        }
     }
 /**
  * Renders the Index
