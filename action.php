@@ -27,15 +27,17 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
     }
 
     function _before(&$event, $param) {
+        global $ACT;
         $pos = $this->getConf('pos');
 
-        ob_start();
-        $this->p_sidebar($pos);
-        $this->sidebar = ob_get_contents();
-        ob_end_clean();
+        print '<div class="page">'.DOKU_LF;
+        if( in_array( $ACT, array( 'show' ) )) {
 
-        if( !empty( $this->sidebar ) && $this->getConf( 'main_always' )) {
-            print '<div class="page">'.DOKU_LF;
+            ob_start();
+            $this->p_sidebar($pos);
+            $this->sidebar = ob_get_contents();
+            ob_end_clean();
+
             print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
             print $this->sidebar;
             print '</div>'. DOKU_LF;
