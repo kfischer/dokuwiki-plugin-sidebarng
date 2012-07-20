@@ -83,12 +83,15 @@ body div.dokuwiki span.toc_close {
     display: none;
 }
 
-h2, h3, h4, h5,
-#content div p {
+#content .page h2, 
+#content .page h3, 
+#content .page h4, 
+#content .page h5,
+#content .page div p {
     width: 710px;
 }
-#content div ol div.li,
-#content div ul div.li {
+#content .page div ol div.li,
+#content .page div ul div.li {
     width: 640px;
 }
 

@@ -30,16 +30,15 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         global $ACT, $ID;
         $pos = $this->getConf('pos');
 
-        print '<div class="page">'.DOKU_LF;
         if( in_array( $ACT, array( 'show' ) )) {
 
-            ob_start();
-            $this->p_sidebar($pos);
-            $this->sidebar = ob_get_contents();
-            ob_end_clean();
+            #ob_start();
+            #$this->sidebar = ob_get_contents();
+            #ob_end_clean();
 
             print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
-            print $this->sidebar;
+            #print $this->sidebar;
+            $this->p_sidebar($pos);
             print '</div>'. DOKU_LF;
         } else {
             print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
@@ -47,10 +46,10 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
             print '</div>'. DOKU_LF;
 
         }
+        print '<div class="page">'.DOKU_LF;
     }
 
     function _after(&$event, $param) {
-        print '</div>' . DOKU_LF; 
     }
 
     /**
