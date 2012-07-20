@@ -27,7 +27,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
     }
 
     function _before(&$event, $param) {
-        global $ACT;
+        global $ACT, $ID;
         $pos = $this->getConf('pos');
 
         print '<div class="page">'.DOKU_LF;
@@ -41,6 +41,11 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
             print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
             print $this->sidebar;
             print '</div>'. DOKU_LF;
+        } else {
+            print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
+            print '<a class="showpage" href="'.wl( $ID ).'">'.$this->getLang( 'showpage' ).'</a>';
+            print '</div>'. DOKU_LF;
+
         }
     }
 

@@ -5,13 +5,13 @@
 /* outside */
 div.dokuwiki div.left_sidebar {
   float: left;
-  width: 23%;
+  width: 30%;
   padding: 0.2em 0.5em 0 0;
 }
 
 div.dokuwiki div.right_sidebar {
   float: right;
-  width: 23%;
+  width: 27%;
   padding: 0.2em 0em 0 0.5em;
 }
 
@@ -31,4 +31,64 @@ div.dokuwiki div.page_left {
 
 
 /* inside */                 
+
+#content .showpage {
+    float: right;
+}
+#content .sidebarng {
+    clear: both;
+    margin: 2.2em 0 0 1em;
+}
+#content .toc,
+#content .sbbox {
+    margin: 0em 0 0 0em;
+    float: none;
+    clear: both;
+}
+#content .sidebarng .main_sidebar {
+    padding: 0 .5em .7em .5em;
+}
+
+#content div.toc {
+    float: right;
+    margin: 40px 0px 20px 0px;
+}
+#content .sidebarng div.toc {
+    width: 97%;
+    float: none;
+    margin: 0;
+}
+body div.dokuwiki span.toc_open, 
+body div.dokuwiki span.toc_close {
+    margin: 0.4em -2px 0 0;
+}
+#content .sbhead {
+    width: 97%;
+}
+#content .sbhead .sbtoggle {
+    border: 0.4em solid white;
+    float: right;
+    display: block;
+    margin: 0.4em 3px 0 0;
+}
+#content .sbhead .close {
+    margin-top: 0;
+    border-bottom: 0.4em solid #333;
+}
+#content .sbhead .open {
+    margin-top: 0.4em;
+    border-top: 0.4em solid #333;
+}
+#content .sbhead .sbtoggle span {
+    display: none;
+}
+
+h2, h3, h4, h5,
+#content div p {
+    width: 710px;
+}
+#content div ol div.li,
+#content div ul div.li {
+    width: 640px;
+}
 
