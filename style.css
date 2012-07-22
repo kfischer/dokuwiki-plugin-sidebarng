@@ -37,13 +37,19 @@ div.dokuwiki div.page_left {
 }
 #content .sidebarng {
     clear: both;
-    margin: 2.2em 0 0 1em;
+    margin: 2.2em 0 1em 1em;
 }
 #content .toc,
 #content .sbbox {
     margin: 0em 0 0 0em;
     float: none;
     clear: both;
+}
+#content div.breadcrumbs {
+    font-size: 100%;
+}
+#content div.breadcrumbs .bchead {
+    color: #333;
 }
 #content .sidebarng .main_sidebar {
     padding: 0 .5em .7em .5em;

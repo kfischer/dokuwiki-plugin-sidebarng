@@ -27,29 +27,18 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
     }
 
     function _before(&$event, $param) {
-        global $ACT, $ID;
         $pos = $this->getConf('pos');
-
-        if( in_array( $ACT, array( 'show' ) )) {
-
-            #ob_start();
-            #$this->sidebar = ob_get_contents();
-            #ob_end_clean();
-
-            print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
-            #print $this->sidebar;
-            $this->p_sidebar($pos);
-            print '</div>'. DOKU_LF;
-        } else {
-            print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
-            print '<a class="showpage" href="'.wl( $ID ).'">'.$this->getLang( 'showpage' ).'</a>';
-            print '</div>'. DOKU_LF;
-
-        }
+	if( $pos == "off" ) { return true; }
+        print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
+        $this->p_sidebar($pos);
+        print '</div>'. DOKU_LF;
         print '<div class="page">'.DOKU_LF;
     }
 
     function _after(&$event, $param) {
+        $pos = $this->getConf('pos');
+	if( $pos == "off" ) { return true; }
+        print '</div>'.DOKU_LF;
     }
 
     /**
@@ -58,22 +47,35 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
      * Michael Klier <chi@chimeric.de>
      */
     function p_sidebar($pos) {
+        global $ACT, $ID;
+
         $sb_order   = explode(',', $this->getConf('order'));
         $sb_content = explode(',', $this->getConf('content'));
+        $this->sb_actions = explode(',', $this->getConf('actions'));
+        $this->sb_order_actions = explode(',', $this->getConf('order_actions'));
 
-        // process contents by given order
-        foreach($sb_order as $sb) {
-            if(in_array($sb,$sb_content)) {
-                $key = array_search($sb,$sb_content);
-                unset($sb_content[$key]);
-                $this->_sidebar_dispatch($sb,$pos);
+        if( !in_array( $ACT, array( 'show' ))) {
+            if( in_array( 'showpage', $this->sb_actions )) {
+                print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
+                print '<a class="showpage" href="'.wl( $ID ).'">'.$this->getLang( 'showpage' ).'</a>';
+                print '</div>'. DOKU_LF;
             }
-        }
+        } else {
 
-        // check for left content not specified by order
-        if(is_array($sb_content) && !empty($sb_content) > 0) {
-            foreach($sb_content as $sb) {
-                $this->_sidebar_dispatch($sb,$pos);
+            // process contents by given order
+            foreach($sb_order as $sb) {
+                if(in_array($sb,$sb_content)) {
+                    $key = array_search($sb,$sb_content);
+                    unset($sb_content[$key]);
+                    $this->_sidebar_dispatch($sb,$pos);
+                }
+            }
+
+            // check for left content not specified by order
+            if(is_array($sb_content) && !empty($sb_content) > 0) {
+                foreach($sb_content as $sb) {
+                    $this->_sidebar_dispatch($sb,$pos);
+                }
             }
         }
     }
@@ -94,6 +96,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         $svREV = $REV;  // save current REV 
 
         $pname = $this->getConf('pagename');
+        $sb_actions = $this->sb_actions;
 
         switch($sb) {
 
@@ -202,31 +205,33 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
 
         
         case 'toolbox':
-
-            print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) {
-                print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
-                print '<div class="toolbox_sidebar sbbox">' . DOKU_LF;
-                print '    <ul>' . DOKU_LF;
-                print '      <li><div class="li">';
-                tpl_actionlink('login');
-                print '      </div></li>' . DOKU_LF;
-                print '    </ul>' . DOKU_LF;
-                print '</div>' . DOKU_LF;
+                if( in_array( $login, $sb_actions )) {
+                    print '    <ul>' . DOKU_LF;
+                    print '      <li><div class="li">';
+                    tpl_actionlink('login');
+                    print '      </div></li>' . DOKU_LF;
+                    print '    </ul>' . DOKU_LF;
+                }
             } else {
-                $actions = array(
-                                 'admin', 
-                                 'revert', 
-                                 'edit', 
-                                 'history', 
-                                 'recent', 
-                                 'backlink', 
-                                 'media', 
-                                 'subscription', 
-                                 'index', 
-                                 'login', 
-                                 'profile',
-                                 'top');
+                print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
+                $actions = array( );
+                // process contents by given order
+                foreach( $this->sb_order_actions as $act) {
+                    if(in_array($act,$sb_actions)) {
+                        $key = array_search($act,$sb_actions);
+                        unset($sb_actions[$key]);
+                        $actions[] = $act;
+
+                    }
+                }
+
+                // check for left content not specified by order
+                if(is_array($sb_actions) && !empty($sb_actions) > 0) {
+                    foreach($sb_actions as $act) {
+                        $actions[] = $act;
+                    }
+                }
 
                 print '<div class="toolbox_sidebar sbbox">' . DOKU_LF;
                 print '    <ul>' . DOKU_LF;
@@ -265,7 +270,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
             if($this->getConf('closedwiki') && !isset($_SERVER['REMOTE_USER'])) return;
             print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
             print '<div class="trace_sidebar sbbox">' . DOKU_LF;
-            print '  <div class="sb_label">'.$lang['breadcrumb'].'</div>' . DOKU_LF;
+            #print '  <div class="sb_label">'.$lang['breadcrumb'].'</div>' . DOKU_LF;
             print '  <div class="breadcrumbs">' . DOKU_LF;
             ($conf['youarehere'] != 1) ? tpl_breadcrumbs() : tpl_youarehere();
             print '  </div>' . DOKU_LF;
