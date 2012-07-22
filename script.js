@@ -1,3 +1,21 @@
+// from lib/scripts/index.js 
+var right_dw_index = jQuery('#right__index__tree').dw_tree({deferInit: true,
+    load_data: function  (show_sublist, $clicky) {
+        jQuery.post(          
+            DOKU_BASE + 'lib/exe/ajax.php',
+            $clicky[0].search.substr(1) + '&call=index',
+            show_sublist, 'html'
+        );
+    }
+});  
+
+jQuery(function(){
+
+// from lib/scripts/index.js 
+  var $tree = jQuery('#right__index__tree');
+  right_dw_index.$obj = $tree;
+  right_dw_index.init();
+ 
 sidebarng = {
 
   init: function( ) {
@@ -11,7 +29,6 @@ sidebarng = {
 	    $toggle = jQuery(document.createElement('span'))
 		    .html('<span>-</span>' )
 		    .addClass( 'sbtoggle close' );
-
 
 	    $header
 		.prepend( $toggle )
@@ -27,7 +44,13 @@ sidebarng = {
 		    }
 		    $box.toggle( );
 		});
-
+            $header.delegate( '.close', 'mouseover', function( ) {
+                $header.click( );
+            });
+            $header.delegate( '.open', 'mouseover', function( ) {
+                $header.click( );
+            });
+console.log( sidebarng.getcookie( $box.attr('class').replace(/ /, '' )));
 	    if( sidebarng.getcookie( $box.attr('class').replace(/ /, '' ))) {
 		$header.click( );
 	    }
@@ -44,4 +67,6 @@ sidebarng = {
   }
 }
 jQuery( sidebarng.init );
+
+})
 
