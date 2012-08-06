@@ -59,6 +59,9 @@ div.dokuwiki div.page_left {
     float: right;
     margin: 40px 0px 20px 0px;
 }
+#content .sidebarng #dw__toc {
+    width: 100%;
+}
 #content .sidebarng div.toc {
     width: 97%;
     float: none;
@@ -77,6 +80,7 @@ body div.dokuwiki span.toc_close {
     display: block;
     margin: 0.4em 3px 0 0;
 }
+#content .sbhead .closed,
 #content .sbhead .close {
     margin-top: 0;
     border-bottom: 0.4em solid #333;
