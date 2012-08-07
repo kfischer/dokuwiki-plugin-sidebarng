@@ -16,9 +16,6 @@ div.dokuwiki div.right_sidebar {
 .dokuwiki div.breadcrumbs {
     font-size: 100%;
 }
-.dokuwiki .sidebarng #dw__toc {
-    width: 100%;
-}
 .dokuwiki .sbhead {
     width: 100%;
 }
@@ -83,22 +80,35 @@ body div.dokuwiki span.toc_close {
   opacity:0.8;filter:Alpha(Opacity=0.8);
 }
 
-div.dokuwiki #dw__toc {
+div.dokuwiki div.sidebarng {
     background-color: transparent;
     text-align: left;
 
   margin: 1.2em 0 0 2em;
   float: right;
-  width: 200px;
-  font-size: 80%;
+  background-color: __background__;
+  opacity:0.8;filter:Alpha(Opacity=0.8);
 }
-#dw__toc .toc {
-    line-height: 1.5em;
+div.dokuwiki div.sidebarng ul {
+    line-height: 1em;
     list-style-type: none;
     list-style-image: none;
 
-  background-color: __background__;
-  opacity:0.8;filter:Alpha(Opacity=0.8);
+    float:left;
+    display: block;
+    line-height: 1em;
+    margin-left: 0em;
+    width: 100%;
+}
+div.dokuwiki div.sidebarng ul {
+    margin-left: 0;
+}
+.dokuwiki .sidebarng #dw__toc,
+.dokuwiki .sidebarng div.toc {
+    width: 100%;
+}
+.dokuwiki .sidebarng div.toc ul {
+    line-height: 1.5em;
 }
 
 
