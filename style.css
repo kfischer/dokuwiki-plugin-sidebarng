@@ -19,9 +19,14 @@ div.dokuwiki div.right_sidebar {
 .dokuwiki .sidebarng #dw__toc {
     width: 100%;
 }
+.dokuwiki .tocheader,
 .dokuwiki .sbhead {
     width: 100%;
 }
+.dokuwiki .sidebarng .toc {
+    width: 100%;
+}
+
 body div.dokuwiki span.toc_open, 
 body div.dokuwiki span.toc_close {
     margin: 0.4em -2px 0 0;
@@ -99,6 +104,16 @@ div.dokuwiki #dw__toc {
 
   background-color: __background__;
   opacity:0.8;filter:Alpha(Opacity=0.8);
+}
+.dokuwiki .sbhead {
+    background-color: transparent;
+    text-align: left;
+    font-weight: bold;
+    padding: 3px;
+    margin: 0 0 2px 0;
+    float: left;
+    font-size: 80%;
+    clear: both;
 }
 
 
