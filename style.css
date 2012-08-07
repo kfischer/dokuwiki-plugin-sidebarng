@@ -2,7 +2,6 @@
  * CSS for the DokuWiki SidebarNG plugin
  */
 
-/* outside */
 div.dokuwiki div.left_sidebar {
   float: left;
   width: 30%;
@@ -14,94 +13,92 @@ div.dokuwiki div.right_sidebar {
   width: 27%;
   padding: 0.2em 0em 0 0.5em;
 }
-
-div.dokuwiki div.page_right {
-  width: 75%;
-  float: right;
-  border-left: 1px solid  __border__;
-  padding-left: 1%;
-}
-
-div.dokuwiki div.page_left {
-  float: left;
-  width: 75%;
-  border-right: 1px solid  __border__;
-  padding-right: 1%;
-}
-
-
-/* inside */                 
-
-#content .showpage {
-    float: right;
-}
-#content .sidebarng {
-    clear: both;
-    margin: 2.2em 0 1em 1em;
-}
-#content .toc,
-#content .sbbox {
-    margin: 0em 0 0 0em;
-    float: none;
-    clear: both;
-}
-#content div.breadcrumbs {
+.dokuwiki div.breadcrumbs {
     font-size: 100%;
 }
-#content div.breadcrumbs .bchead {
-    color: #333;
-}
-#content .sidebarng .main_sidebar {
-    padding: 0 .5em .7em .5em;
-}
-
-#content div.toc {
-    float: right;
-    margin: 40px 0px 20px 0px;
-}
-#content .sidebarng #dw__toc {
+.dokuwiki .sidebarng #dw__toc {
     width: 100%;
 }
-#content .sidebarng div.toc {
-    width: 97%;
-    float: none;
-    margin: 0;
+.dokuwiki .sbhead {
+    width: 100%;
 }
 body div.dokuwiki span.toc_open, 
 body div.dokuwiki span.toc_close {
     margin: 0.4em -2px 0 0;
 }
-#content .sbhead {
-    width: 97%;
-}
-#content .sbhead .sbtoggle {
+.dokuwiki .sbhead .sbtoggle {
     border: 0.4em solid white;
     float: right;
     display: block;
     margin: 0.4em 3px 0 0;
 }
-#content .sbhead .closed,
-#content .sbhead .close {
+.dokuwiki .sbhead .closed,
+.dokuwiki .sbhead .close {
     margin-top: 0;
     border-bottom: 0.4em solid #333;
 }
-#content .sbhead .open {
+.dokuwiki .sbhead .open {
     margin-top: 0.4em;
     border-top: 0.4em solid #333;
 }
-#content .sbhead .sbtoggle span {
+.dokuwiki .sbhead .sbtoggle span {
     display: none;
 }
 
-#content .page h2, 
-#content .page h3, 
-#content .page h4, 
-#content .page h5,
-#content .page div p {
-    width: 710px;
+#dw__toc h3.toggle {
+  padding: 3px;
+  width: 100%;
+  margin-bottom: 2px;
 }
-#content .page div ol div.li,
-#content .page div ul div.li {
-    width: 640px;
+
+#dw__toc h3.toggle span {
+    border: 0.4em solid white;
+    height: 5px;
+    float: right;    
+    display: block;  
+    margin: 0.4em 3px 0 0;
+    text-indent: -2000px;
+}                    
+#dw__toc h3.open span {
+    margin-top: 0;   
+    border-bottom: 0.4em solid #333;
+}                    
+#dw__toc h3.closed span {
+    margin-top: 0.4em;
+    border-top: 0.4em solid #333;
+}                    
+#dw__toc h3.toggle span span {
+    display: none;
 }
+
+#dw__toc h3 {
+    background-color: transparent;
+    text-align: left;
+    font-weight: bold;
+    padding: 3px;
+    margin: 0 0 2px 0;
+    font-size: 1em;
+
+  background-color: __background__;
+  opacity:0.8;filter:Alpha(Opacity=0.8);
+}
+
+div.dokuwiki #dw__toc {
+    background-color: transparent;
+    text-align: left;
+
+  margin: 1.2em 0 0 2em;
+  float: right;
+  width: 200px;
+  font-size: 80%;
+}
+#dw__toc .toc {
+    line-height: 1.5em;
+    list-style-type: none;
+    list-style-image: none;
+
+  background-color: __background__;
+  opacity:0.8;filter:Alpha(Opacity=0.8);
+}
+
 

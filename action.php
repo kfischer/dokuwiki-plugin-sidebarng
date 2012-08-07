@@ -32,7 +32,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
         print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
         $this->p_sidebar($pos);
         print '</div>'. DOKU_LF;
-        print '<div class="page">'.DOKU_LF;
+        print '<div class="pageng">'.DOKU_LF;
     }
 
     function _after(&$event, $param) {
