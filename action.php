@@ -271,7 +271,7 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
             print '<div class="sbhead">'.$this->getLang( $sb ).'</div>' . DOKU_LF;
             print '<div class="trace_sidebar sbbox">' . DOKU_LF;
             #print '  <div class="sb_label">'.$lang['breadcrumb'].'</div>' . DOKU_LF;
-            print '  <div class="breadcrumbs">' . DOKU_LF;
+            print '  <div class="breadcrumbsng">' . DOKU_LF;
             ($conf['youarehere'] != 1) ? tpl_breadcrumbs() : tpl_youarehere();
             print '  </div>' . DOKU_LF;
             print '</div>' . DOKU_LF;
