@@ -26,6 +26,7 @@
 }
 .dokuwiki .sidebarng .toc {
     width: 100%;
+    line-height: 1.5em;
 }
 
 body .dokuwiki span.toc_open, 
@@ -50,18 +51,21 @@ body .dokuwiki span.toc_close {
 .dokuwiki .sbhead .sbtoggle span {
     display: none;
 }
-
+/* dw new toc */
 #dw__toc h3.toggle {
   font-size: 1em;
+  margin: 0 0 2px 0;
+  padding: 3px;
   line-height: 1.5em;
   width: 100%;
 }
-
 #dw__toc h3.toggle span {
     height: 5px;
     float: right;    
     display: block;  
     text-indent: -2000px;
+    border: 0.4em solid white;
+    margin-right: 3px;
 }                    
 #dw__toc h3.open span {
     margin-top: 0;   
@@ -74,20 +78,14 @@ body .dokuwiki span.toc_close {
 #dw__toc h3.toggle strong {
     height: 1px;
 }
-#dw__toc h3.toggle strong span {
-    display: none;
-}
 
 #dw__toc h3 {
-    background-color: transparent;
     text-align: left;
     font-weight: bold;
     padding: 3px;
     margin: 0 0 2px 0;
     font-size: 1em;
-
-  background-color: __background__;
-  opacity:0.8;filter:Alpha(Opacity=0.8);
+    background-color: __background__;
 }
 
 .dokuwiki .sidebarng #dw__toc div {
@@ -98,11 +96,10 @@ body .dokuwiki span.toc_close {
 .dokuwiki .sidebarng {
     background-color: transparent;
     text-align: left;
-
-  margin: 1.2em 0 0 2em;
-  float: right;
-  background-color: __background__;
-  opacity:0.8;filter:Alpha(Opacity=0.8);
+    margin: 0 0 0 2em;
+    float: right;
+    font-size: 12px;
+    line-height: 16px;
 }
 .dokuwiki .sidebarng ul {
     line-height: 1em;
@@ -115,32 +112,25 @@ body .dokuwiki span.toc_close {
     margin-left: 0em;
     width: 100%;
 }
-.dokuwiki .sidebarng ul {
-    margin-left: 0;
-}
-.dokuwiki .sidebarng #dw__toc,
-.dokuwiki .sidebarng div.toc {
-    font-size: 80%;
+.dokuwiki .sidebarng #dw__toc {
+    float: left;
+    clear: both;
     width: 100%;
 }
 
+.dokuwiki .sidebarng h3.toggle,
+.dokuwiki .sidebarng .toc,
+.dokuwiki .sidebarng div.toc,
+.dokuwiki .sbbox,
 .dokuwiki .sbhead {
-    background-color: transparent;
+    background-color: __background__;
+    opacity:0.8;filter:Alpha(Opacity=0.8);
     text-align: left;
     font-weight: bold;
     padding: 3px;
     margin: 0 0 2px 0;
+    font-size: 1em;
     float: left;
-    font-size: 80%;
     clear: both;
-}
-
-.dokuwiki .sbbox {
-    background-color: transparent;
-    text-align: left;
-    padding: 3px;
-    margin: 0 0 2px 0;
-    float: left;
-    font-size: 80%;
-    clear: both;
+    width: 100%;
 }
