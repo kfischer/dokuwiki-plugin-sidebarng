@@ -14,6 +14,8 @@ if(!defined('DOKU_LF')) define('DOKU_LF', "\n");
 
 require_once(DOKU_PLUGIN.'action.php');
 
+$sb_done = array( );
+
 /**
  * All DokuWiki plugins to extend the admin function
  * need to inherit from this class
@@ -27,7 +29,9 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
     }
 
     function _before(&$event, $param) {
+        global $sb_done;
         $pos = $this->getConf('pos');
+        if( in_array( $pos, $sb_done )) { return true; }
 	if( $pos == "off" ) { return true; }
         print '<div class="sidebarng '.$pos.'_sidebar">'.DOKU_LF;
         $this->p_sidebar($pos);
@@ -47,7 +51,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
      * Michael Klier <chi@chimeric.de>
      */
     function p_sidebar($pos) {
-        global $ACT, $ID;
+        global $ACT, $ID, $sb_done;
+        $sb_done[] = $pos;
 
         $sb_order   = explode(',', $this->getConf('order'));
         $sb_content = explode(',', $this->getConf('content'));
