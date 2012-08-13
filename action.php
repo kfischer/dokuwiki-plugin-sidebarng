@@ -14,8 +14,6 @@ if(!defined('DOKU_LF')) define('DOKU_LF', "\n");
 
 require_once(DOKU_PLUGIN.'action.php');
 
-$sb_done = array( );
-
 /**
  * All DokuWiki plugins to extend the admin function
  * need to inherit from this class
@@ -30,6 +28,8 @@ class action_plugin_sidebarng extends DokuWiki_Action_Plugin {
 
     function _before(&$event, $param) {
         global $sb_done;
+        if( !is_array( $sb_done )) { $sb_done = array( ); }
+
         $pos = $this->getConf('pos');
         if( in_array( $pos, $sb_done )) { return true; }
 	if( $pos == "off" ) { return true; }
