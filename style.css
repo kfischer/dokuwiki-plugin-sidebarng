@@ -4,53 +4,47 @@
 
 .dokuwiki div.left_sidebar {
   float: left;
-  width: 30%;
-  padding: 0.2em 0.5em 0 0;
+  width: 27%;
+  padding: 0 0.5em 0 0;
 }
 
 .dokuwiki div.right_sidebar {
   float: right;
   width: 27%;
-  padding: 0.2em 0em 0 0.5em;
-}
-.dokuwiki div.breadcrumbsng {
-    float: left;
-    font-size: 100%;
-}
-.dokuwiki .sbbox div.dtree,
-.dokuwiki .sbbox div.breadcrumbs {
-    float: left;
-}
-.dokuwiki .sbhead {
-    width: 100%;
-}
-.dokuwiki .sidebarng .toc {
-    width: 100%;
-    line-height: 1.5em;
+  padding: 0 0 0 0.5em;
 }
 
-body .dokuwiki span.toc_open, 
-body .dokuwiki span.toc_close {
-    margin: 0.4em -2px 0 0;
-}
 .dokuwiki .sbhead .sbtoggle {
     border: 0.4em solid white;
     float: right;
     display: block;
-    margin: 0.4em 3px 0 0;
-}
-.dokuwiki .sbhead .closed,
-.dokuwiki .sbhead .close {
-    margin-top: 0;
-    border-bottom: 0.4em solid #333;
-}
-.dokuwiki .sbhead .open {
-    margin-top: 0.4em;
-    border-top: 0.4em solid #333;
+    margin: 0.4em 6px 0 0;
 }
 .dokuwiki .sbhead .sbtoggle span {
     display: none;
 }
+.dokuwiki .sbhead .closed,
+.dokuwiki .sbhead .close {
+    margin-top: 0;
+    border-top: 0.4em solid #333;
+}
+.dokuwiki .sbhead .open {
+    margin-top: 0.4em;
+    border-bottom: 0.4em solid #333;
+}
+
+.dokuwiki .sbbox div.breadcrumbsng,
+.dokuwiki .sbbox div.dtree,
+.dokuwiki .sbbox div.breadcrumbs {
+    float: left;
+}
+
+/* old toc */
+.dokuwiki .sidebarng span.toc_open, 
+.dokuwiki .sidebarng span.toc_close {
+    margin: 0.4em 0px 0 0;
+}
+
 /* dw new toc */
 #dw__toc h3.toggle {
   font-size: 1em;
@@ -87,29 +81,15 @@ body .dokuwiki span.toc_close {
     font-size: 1em;
     background-color: __background__;
 }
+.dokuwiki .sidebarng span.toc_open {
+    border-color: #333 __background__ __background__ __background__;
+}
+.dokuwiki .sidebarng span.toc_close {
+    border-color: __background__ __background__ #333 __background__;
+}
 
 .dokuwiki .sidebarng #dw__toc div {
     float: left;
-    width: 100%;
-}
-
-.dokuwiki .sidebarng {
-    background-color: transparent;
-    text-align: left;
-    margin: 0 0 0 2em;
-    float: right;
-    font-size: 12px;
-    line-height: 16px;
-}
-.dokuwiki .sidebarng ul {
-    line-height: 1em;
-    list-style-type: none;
-    list-style-image: none;
-
-    float:left;
-    display: block;
-    line-height: 1em;
-    margin-left: 0em;
     width: 100%;
 }
 .dokuwiki .sidebarng #dw__toc {
@@ -118,19 +98,44 @@ body .dokuwiki span.toc_close {
     width: 100%;
 }
 
+
+.dokuwiki .sidebarng {
+    background-color: transparent;
+    margin: 2.1em 0 0 2em;
+}
+.dokuwiki .sidebarng ul {
+    list-style-type: none;
+    list-style-image: none;
+
+    float:left;
+    display: block;
+    line-height: 1em;
+    margin-left: 0;
+    width: 100%;
+}
+
 .dokuwiki .sidebarng h3.toggle,
-.dokuwiki .sidebarng .toc,
+.dokuwiki .sidebarng ul.toc,
 .dokuwiki .sidebarng div.toc,
+.dokuwiki .sbbox,
+.dokuwiki .sbhead {
+    text-align: left;
+    float: left;
+    clear: both;
+    width: 100%;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0 0 2px 0;
+}
+.dokuwiki .sidebarng h3.toggle,
+.dokuwiki .sbhead {
+    font-weight: bold;
+}
+.dokuwiki .sidebarng h3.toggle,
 .dokuwiki .sbbox,
 .dokuwiki .sbhead {
     background-color: __background__;
     opacity:0.8;filter:Alpha(Opacity=0.8);
-    text-align: left;
-    font-weight: bold;
     padding: 3px;
     margin: 0 0 2px 0;
-    font-size: 1em;
-    float: left;
-    clear: both;
-    width: 100%;
 }
