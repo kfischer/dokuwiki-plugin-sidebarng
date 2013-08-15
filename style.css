@@ -25,11 +25,13 @@
 }
 .dokuwiki .sbhead .closed,
 .dokuwiki .sbhead .close {
-    margin-top: 0;
+    margin: .4em .4em 0;
+    height: 0; width: 0;
     border-top: 0.4em solid #333;
 }
 .dokuwiki .sbhead .open {
-    margin-top: 0.4em;
+    margin: 0 .4 0;
+    height: 0; width: 0;
     border-bottom: 0.4em solid #333;
 }
 
@@ -45,6 +47,42 @@
     margin: 0.4em 0px 0 0;
 }
 
+/* dw new toc */
+#dw__toc h3.toggle {
+  font-size: 1em;
+  margin: 0 0 2px 0;
+  padding: 3px;
+  line-height: 1.5em;
+  width: 100%;
+}
+#dw__toc h3.toggle span {
+    height: 5px;
+    float: right;    
+    display: block;  
+    text-indent: -2000px;
+    border: 0.4em solid white;
+    margin-right: 3px;
+}                    
+#dw__toc h3.open span {
+    margin-top: 0.4em;
+    border-top: 0.4em solid #333;
+}                    
+#dw__toc h3.closed span {
+    margin-top: 0;   
+    border-bottom: 0.4em solid #333;
+}                    
+#dw__toc h3.toggle strong {
+    height: 1px;
+}
+
+#dw__toc h3 {
+    text-align: left;
+    font-weight: bold;
+    padding: 3px;
+    margin: 0 0 2px 0;
+    font-size: 1em;
+    background-color: __background__;
+}
 .dokuwiki .sidebarng span.toc_open {
     border-color: #333 __background__ __background__ __background__;
 }
@@ -96,6 +134,7 @@
     font-weight: bold;
 }
 .dokuwiki .sidebarng h3.toggle,
+.dokuwiki #dw__toc div,
 .dokuwiki .sbbox,
 .dokuwiki .sbhead {
     background-color: __background__;
