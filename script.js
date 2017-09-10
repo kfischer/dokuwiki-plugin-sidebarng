@@ -65,7 +65,7 @@ console.log( sidebarng.getcookie( $box.attr('class').replace(/ /, '' )));
   getcookie: function( k ) {
     return DokuCookie.getValue( 'sidebarng_hide:'+k );
   }
-}
+};
 jQuery( sidebarng.init );
 
 })
