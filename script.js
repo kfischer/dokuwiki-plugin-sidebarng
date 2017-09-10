@@ -68,5 +68,5 @@ console.log( sidebarng.getcookie( $box.attr('class').replace(/ /, '' )));
 };
 jQuery( sidebarng.init );
 
-})
+});
 
