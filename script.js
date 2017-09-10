@@ -50,7 +50,7 @@ sidebarng = {
             $header.delegate( '.open', 'mouseover', function( ) {
                 $header.click( );
             });
-console.log( sidebarng.getcookie( $box.attr('class').replace(/ /, '' )));
+// console.log( sidebarng.getcookie( $box.attr('class').replace(/ /, '' )));
 	    if( sidebarng.getcookie( $box.attr('class').replace(/ /, '' ))) {
 		$header.click( );
 	    }
